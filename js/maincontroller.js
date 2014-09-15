@@ -2,10 +2,10 @@
     globalScope = $scope;
 
     $scope.dataList = [
-        {text:"This",x:10,y:130}, 
-        {text:"Is",x:30,y:110}, 
-        {text:"A",x:70,y:150}, 
-        { text: "Test", x: 10, y: 190 }];
+        {text:"This","stype":"smallgreen",x:10,y:130}, 
+        {text:"Is","stype":"largered",x:80,y:200}, 
+        {text:"A","stype":"smallgreen",x:70,y:150}, 
+        { text: "Test", "stype":"smallgreen",x: 10, y: 190 }];
 
 
     $scope.update = function() {
@@ -23,12 +23,13 @@
  //       alert("up");
     }
 
-    $scope.mouseMove = function (evt) {
+    $scope.mouseMove = function ($event) {
         //        alert("mouseMove");
+        var a=0;
         if ($scope.dragging) {
             // offset relative to target
-            newx = evt.x - evt.currentTarget.offsetLeft;
-            newy = evt.y - evt.currentTarget.offsetTop;
+            newx = $event.x - $event.currentTarget.offsetLeft;
+            newy = $event.y - $event.currentTarget.offsetTop;
             $scope.dataList[1] = { "text": "new", x: newx, y: newy};
         }
     }

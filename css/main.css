@@ -3,6 +3,10 @@ body {
   background: #e5e5e5;
   color: #000;
 }
+ng-scope {
+  fill:red;
+  stroke:black;
+}
 h1,
 h2,
 h3,
