@@ -15,6 +15,33 @@ app.directive('svgItem', function ($timeout) {
 	}} ) ;
 
 
+app.directive('svgCircles', function ($timeout) {
+
+    return {
+        restrict: 'AEC',
+        link: function (scope, lElement, lAttr) {
+            var path = makeNode('g', lElement, lAttr);
+            var newGuy = path.cloneNode(true);
+            $timeout(function () {
+                lElement.replaceWith(newGuy);
+                var circ1 = d3.select(newGuy);
+                circ1.append("circle")
+                    .attr("r", 30)
+                    .attr("cx", 0)
+                    .attr("cy", 0)
+                    .attr("fill", "red");
+                circ1.append("circle")
+                    .attr("r", 15)
+                    .attr("cx", 0)
+                    .attr("cy", 0)
+                    .attr("fill", "blue");
+            })
+ 
+        }
+    }
+});
+
+
 
 /* Create a shape node with the given settings. */
 function makeNode(name, element, settings) {

@@ -30,7 +30,7 @@
             // offset relative to target
             newx = $event.x - $event.currentTarget.offsetLeft;
             newy = $event.y - $event.currentTarget.offsetTop;
-            $scope.dataList[1] = { "text": "new", x: newx, y: newy};
+            $scope.dataList[1] = { "text": "new","stype":"largered", x: newx, y: newy};
         }
     }
 });
