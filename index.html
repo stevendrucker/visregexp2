@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Steven Drucker's HomePage</title>
+    <title>Angular VISREGEXP</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="css/prettyPhoto.css" rel="stylesheet">
@@ -56,7 +56,7 @@
             <button ng-click="update()">update</button>
             <div class="center gap"> 
                 
-                <svg xmlns="http://www.w3.org/2000/svg" style="background:white" 
+                <svg id="mysvg" xmlns="http://www.w3.org/2000/svg" style="background:white" 
                     ng-mousemove="mouseMove($event)"
                     ng-mousedown="mouseDown($event)"
                      ng-mouseup="mouseUp($event)">
@@ -82,6 +82,8 @@
 <!--                         <rect width="10" height="10" x="0" y="0" fill="red"></rect>
  -->                    </g>
                     <svg-circles transform="translate(200,200)"></svg-circles>
+
+                    <line ng-if="lineDraw == true" stroke="black" x1="{{curPath.x1}}" y1="{{curPath.y1}}" x2="{{curPath.x2}}" y2="{{curPath.y2}}"></line>                
                 </svg>
             </div>
                 <!--

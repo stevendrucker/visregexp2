@@ -7,7 +7,8 @@
         {text:"A","stype":"smallgreen",x:70,y:150}, 
         { text: "Test", "stype":"smallgreen",x: 10, y: 190 }];
 
-
+    $scope.lineDraw = false;
+    $scope.curPath = {x1:0,y1:0,x2:0,y2:0};
     $scope.update = function() {
  //       alert("in update");
 
@@ -15,12 +16,14 @@
     }
 
     $scope.mouseDown = function (evt) {
-        $scope.dragging = true;
+        if ($scope.lineDraw == false) {
+            $scope.dragging = true;
+        }
     }
 
     $scope.mouseUp = function (evt) {
         $scope.dragging = false;
- //       alert("up");
+        $scope.lineDraw = false;
     }
 
     $scope.mouseMove = function ($event) {
@@ -28,9 +31,20 @@
         var a=0;
         if ($scope.dragging) {
             // offset relative to target
-            newx = $event.x - $event.currentTarget.offsetLeft;
-            newy = $event.y - $event.currentTarget.offsetTop;
-            $scope.dataList[1] = { "text": "new","stype":"largered", x: newx, y: newy};
+            //newx = $event.x - $event.currentTarget.offsetLeft;
+            //newy = $event.y - $event.currentTarget.offsetTop;
+            newx = $event.pageX - $event.currentTarget.offsetLeft;
+            newy = $event.pageY - $event.currentTarget.offsetTop;
+//            $scope.dataList[1] = { "text": "new","stype":"largered", x: newx, y: newy};
+            $scope.dataList[1].x = newx;
+            $scope.dataList[1].y = newy;
+        }
+
+        if ($scope.lineDraw) {
+            newx = $event.pageX - $event.currentTarget.offsetLeft;
+            newy = $event.pageY - $event.currentTarget.offsetTop;
+            $scope.curPath.x2 = newx;
+            $scope.curPath.y2 = newy;          
         }
     }
 });

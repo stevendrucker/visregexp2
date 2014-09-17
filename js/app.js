@@ -29,12 +29,27 @@ app.directive('svgCircles', function ($timeout) {
                     .attr("r", 30)
                     .attr("cx", 0)
                     .attr("cy", 0)
-                    .attr("fill", "red");
+                    .attr("fill", "red")
+                 	.on("mousedown", function() {
+                 		var p = [0,0];
+                 		p = d3.mouse(document.getElementById("mysvg"));
+                 		scope.lineDraw = true;
+                 		newx=p[0]
+                 		newy=p[1];
+//                 		newx = $event.pageX - $event.currentTarget.offsetLeft;
+//                 		newy = $event.pageY - $event.currentTarget.offsetTop;
+                 		scope.curPath.x1=newx;
+                 		scope.curPath.y1=newy;
+                 		scope.curPath.x2=newx;
+                 		scope.curPath.y2=newy;
+                	});
                 circ1.append("circle")
                     .attr("r", 15)
                     .attr("cx", 0)
                     .attr("cy", 0)
                     .attr("fill", "blue");
+
+              
             })
  
         }
