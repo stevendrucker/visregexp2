@@ -56,7 +56,39 @@ app.directive('svgCircles', function ($timeout) {
     }
 });
 
+var lineFunction = d3.svg.line()
+    .x(function (d) { return d.x; })
+    .y(function (d) { return d.y; })
+    .interpolate("basis");
 
+app.directive('svgPath', function ($timeout) {
+
+    return {
+        restrict: 'AEC',
+        scope: {
+            theconn: '=',         
+        },
+        link: function (scope, lElement, lAttr) {
+            var theObject = scope.theconn;
+            //var theLineObjects = [scope.$parent.dataList[theObject.start], scope.$parent.dataList[theObject.end]];
+            var theLineObjects = [{ x: scope.$parent.dataList[theObject.start].x+2, y: scope.$parent.dataList[theObject.start].y+2 },
+                { x: scope.$parent.dataList[theObject.start].x + 22, y: scope.$parent.dataList[theObject.start].y+2 },
+                { x: scope.$parent.dataList[theObject.end].x - 18, y: scope.$parent.dataList[theObject.end].y+2 },
+                { x: scope.$parent.dataList[theObject.end].x+2, y: scope.$parent.dataList[theObject.end].y+2 }, ];
+
+            var path = makeNode('path', lElement, lAttr);
+            var d3path = d3.select(path);
+            d3path.attr("d", lineFunction(theLineObjects))
+                .attr("stroke", "blue")
+                .attr("stroke-width", 2)
+                .attr("fill", "none");
+            var newGuy = path.cloneNode(true);
+            $timeout(function () {
+                lElement.replaceWith(newGuy);                
+            })
+        }
+    }
+});
 
 /* Create a shape node with the given settings. */
 function makeNode(name, element, settings) {

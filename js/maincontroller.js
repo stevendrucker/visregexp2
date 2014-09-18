@@ -5,7 +5,13 @@
         {text:"This","stype":"smallgreen",x:10,y:130}, 
         {text:"Is","stype":"largered",x:80,y:200}, 
         {text:"A","stype":"smallgreen",x:70,y:150}, 
-        { text: "Test", "stype":"smallgreen",x: 10, y: 190 }];
+        { text: "Test", "stype": "smallgreen", x: 10, y: 190 }];
+
+    $scope.connectionList = [
+        { start: 0, end: 1 },
+        { start: 0, end: 2},
+        { start: 1, end: 3}
+    ]
 
     $scope.lineDraw = false;
     $scope.curPath = {x1:0,y1:0,x2:0,y2:0};
