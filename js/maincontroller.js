@@ -1,16 +1,16 @@
 ﻿app.controller("MainController", function ($scope) {
     globalScope = $scope;
-
+    $scope.dragObjectIndex = 0;
     $scope.dataList = [
-        {text:"This","stype":"smallgreen",x:10,y:130}, 
-        {text:"Is","stype":"largered",x:80,y:200}, 
-        {text:"A","stype":"smallgreen",x:70,y:150}, 
-        { text: "Test", "stype": "smallgreen", x: 10, y: 190 }];
+        {text:"This","stype":"smallgreen",x:10,y:130, connections:[0,1]}, 
+        { text: "Is", "stype": "largered", x: 80, y: 200, connections: [0,2] },
+        { text: "A", "stype": "smallgreen", x: 70, y: 150, connections: [1] },
+        { text: "Test", "stype": "smallgreen", x: 10, y: 190, connections: [2] }];
 
     $scope.connectionList = [
-        { start: 0, end: 1 },
-        { start: 0, end: 2},
-        { start: 1, end: 3}
+        { start: $scope.dataList[0], end: $scope.dataList[1] },
+        { start: $scope.dataList[0], end: $scope.dataList[2] },
+        { start: $scope.dataList[1], end: $scope.dataList[3] }
     ]
 
     $scope.lineDraw = false;
@@ -42,8 +42,15 @@
             newx = $event.pageX - $event.currentTarget.offsetLeft;
             newy = $event.pageY - $event.currentTarget.offsetTop;
 //            $scope.dataList[1] = { "text": "new","stype":"largered", x: newx, y: newy};
-            $scope.dataList[1].x = newx;
-            $scope.dataList[1].y = newy;
+            $scope.dataList[$scope.dragObjectIndex].x = newx;
+            $scope.dataList[$scope.dragObjectIndex].y = newy;
+    
+            for (conn in $scope.dataList[$scope.dragObjectIndex].connections) {                
+                which = $scope.dataList[$scope.dragObjectIndex].connections[conn];
+                $scope.connectionList[which] = { start: $scope.connectionList[which].start, end: $scope.connectionList[which].end };
+            }
+            
+            //$scope.connectionList[2]= {start: $scope.dataList[1], end: $scope.dataList[3] }
         }
 
         if ($scope.lineDraw) {
@@ -52,6 +59,11 @@
             $scope.curPath.x2 = newx;
             $scope.curPath.y2 = newy;          
         }
+    }
+
+    $scope.objmousedown = function(theObjIndex)
+    {
+        $scope.dragObjectIndex = theObjIndex;
     }
 });
 

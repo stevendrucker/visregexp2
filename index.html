@@ -61,6 +61,7 @@
                     ng-mousemove="mouseMove($event)"
                     ng-mousedown="mouseDown($event)"
                      ng-mouseup="mouseUp($event)">
+                    <!--
                     <g transform="translate(100,100)">
                         <rect width="30" height="20" x="0" y="0" fill="blue"></rect>
                     </g>
@@ -72,16 +73,19 @@
                     <g transform="translate(20,150)">
                         <rect width="30" height="20" x="0" y="0" fill="blue"></rect>
                     </g>
-
+-->
 
                     <g ng-repeat="obj in dataList"
+                       ng-mousedown="objmousedown($index)"
                        ng-attr-transform="translate({{obj.x}}, {{obj.y}})"
                        ng-attr-class="">
 
-                       <svg-item ng-if="obj.stype=='largered'" width="50" height="50" x="0" y="0" fill="red">  </svg-item>
-                       <svg-item ng-if="obj.stype=='smallgreen'" width="10" height="10" x="0" y="0" fill="green">  </svg-item>
-<!--                         <rect width="10" height="10" x="0" y="0" fill="red"></rect>
- -->                </g>
+                        <svg-item ng-if="obj.stype=='largered'" width="50" height="50" x="0" y="0" fill="red">  </svg-item>
+                        <svg-item ng-if="obj.stype=='smallgreen'" width="30" height="30" x="0" y="0" fill="green">  </svg-item>
+                        <text>{{obj.text}}</text>
+                        <!--                         <rect width="10" height="10" x="0" y="0" fill="red"></rect>
+         -->
+                    </g>
 
                     <g ng-repeat="obj in connectionList">
                         <svg-path theconn='obj'>  </svg-path>

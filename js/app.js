@@ -69,13 +69,13 @@ app.directive('svgPath', function ($timeout) {
             theconn: '=',         
         },
         link: function (scope, lElement, lAttr) {
+            
             var theObject = scope.theconn;
-            //var theLineObjects = [scope.$parent.dataList[theObject.start], scope.$parent.dataList[theObject.end]];
-            var theLineObjects = [{ x: scope.$parent.dataList[theObject.start].x+2, y: scope.$parent.dataList[theObject.start].y+2 },
-                { x: scope.$parent.dataList[theObject.start].x + 22, y: scope.$parent.dataList[theObject.start].y+2 },
-                { x: scope.$parent.dataList[theObject.end].x - 18, y: scope.$parent.dataList[theObject.end].y+2 },
-                { x: scope.$parent.dataList[theObject.end].x+2, y: scope.$parent.dataList[theObject.end].y+2 }, ];
-
+            
+            var theLineObjects = [{ x:theObject.start.x+2, y: theObject.start.y+2 },
+                { x: theObject.start.x + 22, y: theObject.start.y+2 },
+                { x: theObject.end.x - 18, y: theObject.end.y+2 },
+                { x: theObject.end.x+2, y: theObject.end.y+2 } ];
             var path = makeNode('path', lElement, lAttr);
             var d3path = d3.select(path);
             d3path.attr("d", lineFunction(theLineObjects))
