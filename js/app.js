@@ -4,11 +4,33 @@ app.directive('svgItem', function ($timeout) {
 
     return {
         restrict: 'AEC',
-        link: function(scope, lElement, lAttr) {
-	      var path = makeNode('rect', lElement, lAttr);
-	      var newGuy = path.cloneNode(true);
+        link: function (scope, lElement, lAttr) {
+          var path = makeNode('g', lElement, lAttr);
+          var newGuy = path.cloneNode(true);
+           /*
+          var path = makeNode('rect', lElement, lAttr);
+	      var newGuy = path.cloneNode(true);*/
 	      $timeout(function() {
-	        lElement.replaceWith(newGuy);
+	          lElement.replaceWith(newGuy);	          
+	          var theElem = d3.select(newGuy);	         
+	          theElem.append("circle")
+                  .attr("r", 10)
+                  .attr("cx", 100)
+                  .attr("cy", 0)
+                  .attr("fill", "lightgray");
+	          theElem.append("circle")
+                  .attr("r", 10)
+                  .attr("cx", -100)
+                  .attr("cy", 0)
+                  .attr("fill", "lightgray");	                        	      
+	          theElem.append("rect")
+                .attr("rx", 10)
+                .attr("ry", 80)
+                .attr("x", -100)
+                .attr("y", -50)
+                .attr("width", 200)
+                .attr("height", 100)
+                .attr("fill", "darkgray");
 	      })
 	      console.log('Replacing ', lElement, ' with ', newGuy);
 	    } 
@@ -72,15 +94,15 @@ app.directive('svgPath', function ($timeout) {
             
             var theObject = scope.theconn;
             
-            var theLineObjects = [{ x:theObject.start.x+2, y: theObject.start.y+2 },
-                { x: theObject.start.x + 22, y: theObject.start.y+2 },
-                { x: theObject.end.x - 18, y: theObject.end.y+2 },
-                { x: theObject.end.x+2, y: theObject.end.y+2 } ];
+            var theLineObjects = [{ x:theObject.start.x, y: theObject.start.y },
+                { x: theObject.start.x + 100, y: theObject.start.y },
+                { x: theObject.end.x - 100, y: theObject.end.y },
+                { x: theObject.end.x, y: theObject.end.y } ];
             var path = makeNode('path', lElement, lAttr);
             var d3path = d3.select(path);
             d3path.attr("d", lineFunction(theLineObjects))
                 .attr("stroke", "blue")
-                .attr("stroke-width", 2)
+                .attr("stroke-width", 15)
                 .attr("fill", "none");
             var newGuy = path.cloneNode(true);
             $timeout(function () {

@@ -2,10 +2,10 @@
     globalScope = $scope;
     $scope.dragObjectIndex = 0;
     $scope.dataList = [
-        {text:"This","stype":"smallgreen",x:10,y:130, connections:[0,1]}, 
-        { text: "Is", "stype": "largered", x: 80, y: 200, connections: [0,2] },
-        { text: "A", "stype": "smallgreen", x: 70, y: 150, connections: [1] },
-        { text: "Test", "stype": "smallgreen", x: 10, y: 190, connections: [2] }];
+        {text:"This","stype":"smallgreen",x:210,y:330, connections:[0,1]}, 
+        { text: "Is", "stype": "largered", x: 150, y: 200, connections: [0,2] },
+        { text: "A", "stype": "smallgreen", x: 370, y: 150, connections: [1] },
+        { text: "Test", "stype": "smallgreen", x: 110, y: 190, connections: [2] }];
 
     $scope.connectionList = [
         { start: $scope.dataList[0], end: $scope.dataList[1] },
