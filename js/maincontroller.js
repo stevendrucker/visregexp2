@@ -2,7 +2,7 @@
     $scope.nodeWidth = 200;
     $scope.nodeHeight = 100;
     globalScope = $scope;
-    $scope.dragObjectIndex = 0;
+    $scope.dragObject = null;
     $scope.dataList = [
         {text:"This",stype:"smallgreen",x:210,y:330, connections:[0,1]}, 
         { text: "Is", stype: "largered", x: 150, y: 200, connections: [0,2] },
@@ -31,6 +31,7 @@
         newy = evt.pageY - evt.currentTarget.offsetTop;
         newnode = new VR_node("newnode","smallgreen",newx,newy,[]);
         $scope.dataList.push(newnode);
+
     }
 
     $scope.mouseDown = function (evt) {
@@ -41,18 +42,18 @@
 
     $scope.mouseUp = function ($event) {
         $scope.dragging = false;
+        $scope.dragObject = null;
         if ($scope.lineDraw) {
             $scope.lineDraw = false;
             newx = $event.pageX - $event.currentTarget.offsetLeft;
             newy = $event.pageY - $event.currentTarget.offsetTop;
             aNode = $scope.findNode(newx,newy);
-            if (aNode > -1) {
+            if (aNode != null) {
                 console.log('Linking node', $scope.mouseDownObject, ' with ', aNode);
-                aLink = new VR_connection($scope,$scope.mouseDownObject, aNode);
-                alen = $scope.connectionList.length;
+                aLink = new VR_connection($scope.mouseDownObject, aNode);
                 $scope.connectionList.push(aLink);
-                $scope.dataList[aNode].connections.push(alen);
-                $scope.dataList[$scope.mouseDownObject].connections.push(alen);
+                aNode.connections.push(aLink);
+                $scope.mouseDownObject.connections.push(aLink);
             }
         }
     }
@@ -60,11 +61,11 @@
     $scope.findNode = function (x,y) {
         nodeWidth = $scope.nodeWidth;
         nodeHeight = $scope.nodeHeight;
-        retval = -1;
+        retval = null;
         $scope.dataList.some (function (node, i ) {
             if (((node.x - nodeWidth/2) < x) && (x<(node.x + nodeWidth/2)) 
                 && ((node.y - nodeHeight/2) < y) && (y <(node.y + nodeHeight/2))) {
-                retval=i;
+                retval=node;
                 return(true);
             }
             else return(false);  
@@ -76,22 +77,11 @@
     $scope.mouseMove = function ($event) {
         //        alert("mouseMove");
         var a=0;
-        if ($scope.dragging) {
-            // offset relative to target
-            //newx = $event.x - $event.currentTarget.offsetLeft;
-            //newy = $event.y - $event.currentTarget.offsetTop;
+        if ($scope.dragging && $scope.dragObject != null) {
             newx = $event.pageX - $event.currentTarget.offsetLeft;
             newy = $event.pageY - $event.currentTarget.offsetTop;
-//            $scope.dataList[1] = { "text": "new","stype":"largered", x: newx, y: newy};
-            $scope.dataList[$scope.dragObjectIndex].x = newx;
-            $scope.dataList[$scope.dragObjectIndex].y = newy;
-    
-            for (conn in $scope.dataList[$scope.dragObjectIndex].connections) {                
-                which = $scope.dataList[$scope.dragObjectIndex].connections[conn];
-                $scope.connectionList[which] = { start: $scope.connectionList[which].start, end: $scope.connectionList[which].end };
-            }
-            
-            //$scope.connectionList[2]= {start: $scope.dataList[1], end: $scope.dataList[3] }
+            $scope.dragObject.x = newx;
+            $scope.dragObject.y = newy;
         }
 
         if ($scope.lineDraw) {
@@ -102,9 +92,32 @@
         }
     }
 
-    $scope.objmousedown = function(theObjIndex)
+    $scope.objmousedown = function($event, theObjIndex, theObject)
     {
-        $scope.dragObjectIndex = theObjIndex;
+        $scope.dragObject = theObject;
+
+        if ($event.shiftKey) {
+            $scope.deleteNode(theObjIndex);
+            // delete the node - but now all the connects will point wrong, so need to fix!
+        }
+    }
+
+    $scope.deleteNode = function(n) {
+        // first delete connections
+        connlist = $scope.dataList[n].connections;
+        // sort descending
+        connlist.sort(function(a, b){return b-a});
+        for (el in connlist) {
+            $scope.connectionList.splice(connlist[el],1);
+        }
+        $scope.dataList.splice(n,1);
+        // update connections
+        /*
+        for (el in $scope.connectionList) {
+            if (el.start > n) {el.start = el.start -1};
+            if (el.end > n) {el.end = el.end - 1};
+        }
+        */
     }
 });
 
@@ -117,10 +130,10 @@ VR_node = function(name, stype, x,y,conns)
     this.connections = conns;
 }
 
-VR_connection = function($scope,startIndex, endIndex)
+VR_connection = function(startObject, endObject)
 {
-    this.start = $scope.dataList[startIndex];
-    this.end = $scope.dataList[endIndex];
+    this.start = startObject;
+    this.end = endObject; 
 }
 
 

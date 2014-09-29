@@ -69,7 +69,7 @@
 
                      <!-- Then draw the nodex -->
                     <g ng-repeat="obj in dataList"
-                       ng-mousedown="objmousedown($index)"
+                       ng-mousedown="objmousedown($event,$index,obj)"
                        ng-attr-transform="translate({{obj.x}}, {{obj.y}})"
                        class="nodeClass">
 

@@ -11,7 +11,6 @@ app.directive('node', function ($timeout) {
           var path = makeNode('g', lElement, lAttr);
           var newGuy = path.cloneNode(true);
 	      $timeout(function() {
-	      	  var objIndex=parseInt(lElement.attr("theindex"))         
 	          lElement.replaceWith(newGuy);	 
 	          var theElem = d3.select(newGuy);
 	          theElem.append("circle")
@@ -19,13 +18,11 @@ app.directive('node', function ($timeout) {
                   .attr("cx", 100)
                   .attr("cy", 0)
                   .attr("fill", "lightgray")
-                  .attr("objIndex",objIndex)
                   .on("mousedown", function() {
                  		var p = [0,0];
                  		p = d3.mouse(document.getElementById("mysvg"));
                  		scope.$parent.$parent.$parent.lineDraw = true;
-                 		var localObjIndex = parseInt(this.attributes["objIndex"].value)
-                 		scope.$parent.$parent.$parent.mouseDownObject = localObjIndex;
+                 		scope.$parent.$parent.$parent.mouseDownObject = scope.obj;
                  		newx=p[0]
                  		newy=p[1];
 //                 		newx = $event.pageX - $event.currentTarget.offsetLeft;
@@ -81,9 +78,36 @@ app.directive('nodeconnection', function ($timeout) {
                 .attr("stroke-width", 15)
                 .attr("fill", "none");
             var newGuy = path.cloneNode(true);
+            scope.thePath = newGuy;
             $timeout(function () {
                 lElement.replaceWith(newGuy);                
             })
+            scope.$watchGroup(
+            	[function() {
+            		return(theObject.end.x)
+            	},
+            	function() {
+            		return(theObject.end.y)
+            	},
+            	function() {
+            		return(theObject.start.x)
+            	},
+				function() {
+            		return(theObject.start.y)
+            	}]
+            	, function () {
+				var theObject = scope.theconn;
+				var theLineObjects = [{ x:theObject.start.x, y: theObject.start.y },
+                	{ x: theObject.start.x + 100, y: theObject.start.y },
+                	{ x: theObject.end.x - 100, y: theObject.end.y },
+                	{ x: theObject.end.x, y: theObject.end.y } ];
+            	var path = makeNode('path', lElement, lAttr);
+            	var d3path = d3.select(scope.thePath);
+	            d3path.attr("d", lineFunction(theLineObjects))
+	                .attr("stroke", "blue")
+	                .attr("stroke-width", 15)
+	                .attr("fill", "none");			
+        	})
         }
     }
 });
