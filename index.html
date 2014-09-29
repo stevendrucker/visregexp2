@@ -54,58 +54,35 @@
             <div class="center gap">
                 <h2>Squeries</h2>
             </div><!--/.center-->
-            <button ng-click="update()">update</button>
             <div class="center gap"> 
                 
                 <svg id="mysvg" xmlns="http://www.w3.org/2000/svg" style="background:white"
+                    ng-dblclick="dblclick($event)"
                      ng-mousemove="mouseMove($event)"
                      ng-mousedown="mouseDown($event)"
                      ng-mouseup="mouseUp($event)">
-                    <!--
-                            <g transform="translate(100,100)">
-                                <rect width="30" height="20" x="0" y="0" fill="blue"></rect>
-                            </g>
 
-                            <g transform="translate(200,150)">
-                                <rect width="30" height="20" x="0" y="0" fill="blue"></rect>
-                            </g>
-
-                            <g transform="translate(20,150)">
-                                <rect width="30" height="20" x="0" y="0" fill="blue"></rect>
-                            </g>
-        -->
+                     <!-- First draw the connections -->
                     <g ng-repeat="obj in connectionList">
-                        <svg-path theconn='obj'>  </svg-path>
+                        <nodeconnection theconn='obj'>  </nodeconnection>
                     </g>
 
+                     <!-- Then draw the nodex -->
                     <g ng-repeat="obj in dataList"
                        ng-mousedown="objmousedown($index)"
                        ng-attr-transform="translate({{obj.x}}, {{obj.y}})"
-                       ng-attr-class="">
+                       class="nodeClass">
 
-                        <svg-item ng-if="obj.stype=='largered'" fill="lightgray">  </svg-item>
-                        <svg-item ng-if="obj.stype=='smallgreen'" fill="lightgray">  </svg-item>
-                        <text x="0" y="0">{{obj.text}}</text>
-                        <!--                         <rect width="10" height="10" x="0" y="0" fill="red"></rect>
-            -->
+                        <node ng-if="obj.stype=='largered'" theIndex="{{$index}}" obj='obj' fill="lightgray">  </node>
+                        <node ng-if="obj.stype=='smallgreen'" theIndex="{{$index}}" obj='obj' fill="lightgray">  </node>
+                       <!-- <text x="0" y="0">{{obj.text}}</text>-->
                     </g>
 
-
-
-                    <svg-circles transform="translate(200,200)"></svg-circles>
-
-                    <line ng-if="lineDraw == true" stroke="black" ng-attr-x1="{{curPath.x1}}" ng-attr-y1="{{curPath.y1}}" ng-attr-x2="{{curPath.x2}}" ng-attr-y2="{{curPath.y2}}"></line>
+        <!-- this is the connection line that's invisible until in lineDraw mode -->
+                    <line ng-if="lineDraw == true" stroke="blue" ng-attr-x1="{{curPath.x1}}" ng-attr-y1="{{curPath.y1}}" ng-attr-x2="{{curPath.x2}}"      ng-attr-y2="{{curPath.y2}}" stroke-width="15"></line>
                 </svg>
             </div>
-                <!--
-        <svg xmlns="http://www.w3.org/2000/svg"  width="500px" height="500px" class="mySVG">
-            <g ng-repeat="obj in dataList">
-                <svg-item> </svg-item>
-            </g>
-
-        </svg>
-            -->
-</div>
+        </div>
     </section><!--/#Squeries-->
 
   
