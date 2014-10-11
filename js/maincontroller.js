@@ -3,7 +3,7 @@
     $scope.nodeHeight = 100;
     globalScope = $scope;
     $scope.dragObject = null;
-    $scope.dataList = [
+/*    $scope.dataList = [
         {text:"This",stype:"smallgreen",x:210,y:330, connections:[0,1]}, 
         { text: "Is", stype: "largered", x: 150, y: 200, connections: [0,2] },
         { text: "A", stype: "smallgreen", x: 370, y: 150, connections: [1] },
@@ -14,7 +14,7 @@
         { start: $scope.dataList[0], end: $scope.dataList[2] },
         { start: $scope.dataList[1], end: $scope.dataList[3] }
     ]
-
+*/
     $scope.dataList = [];
     $scope.connectionList = [];
 
@@ -97,27 +97,22 @@
         $scope.dragObject = theObject;
 
         if ($event.shiftKey) {
-            $scope.deleteNode(theObjIndex);
+            $scope.deleteNode(theObject);
             // delete the node - but now all the connects will point wrong, so need to fix!
+            $scope.dataList.splice(theObjIndex, 1);
+
         }
     }
 
-    $scope.deleteNode = function(n) {
+    $scope.deleteNode = function(node) {
         // first delete connections
-        connlist = $scope.dataList[n].connections;
+        var connlist = node.connections;
         // sort descending
-        connlist.sort(function(a, b){return b-a});
-        for (el in connlist) {
-            $scope.connectionList.splice(connlist[el],1);
-        }
-        $scope.dataList.splice(n,1);
-        // update connections
-        /*
-        for (el in $scope.connectionList) {
-            if (el.start > n) {el.start = el.start -1};
-            if (el.end > n) {el.end = el.end - 1};
-        }
-        */
+        
+        connlist.forEach(function (alink) {
+            var which = $scope.connectionList.indexOf(alink);
+            $scope.connectionList.splice(which, 1);
+        });
     }
 });
 
