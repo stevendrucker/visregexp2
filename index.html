@@ -62,6 +62,10 @@
                      ng-mousedown="mouseDown($event)"
                      ng-mouseup="mouseUp($event)">
 
+
+                    <!-- this is the connection line that's invisible until in lineDraw mode -->
+                    <line ng-if="lineDraw == true" stroke="blue" ng-attr-x1="{{curPath.x1}}" ng-attr-y1="{{curPath.y1}}" ng-attr-x2="{{curPath.x2}}" ng-attr-y2="{{curPath.y2}}" stroke-width="15"></line>
+
                      <!-- First draw the connections -->
                     <g ng-repeat="obj in connectionList">
                         <nodeconnection theconn='obj'>  </nodeconnection>
@@ -73,13 +77,10 @@
                        ng-attr-transform="translate({{obj.x}}, {{obj.y}})"
                        class="nodeClass">
 
-                        <node ng-if="obj.stype=='largered'" theIndex="{{$index}}" obj='obj' fill="lightgray">  </node>
-                        <node ng-if="obj.stype=='smallgreen'" theIndex="{{$index}}" obj='obj' fill="lightgray">  </node>
+                        <node theIndex="{{$index}}" obj='obj' fill="lightgray">  </node>                        
                        <!-- <text x="0" y="0">{{obj.text}}</text>-->
                     </g>
 
-        <!-- this is the connection line that's invisible until in lineDraw mode -->
-                    <line ng-if="lineDraw == true" stroke="blue" ng-attr-x1="{{curPath.x1}}" ng-attr-y1="{{curPath.y1}}" ng-attr-x2="{{curPath.x2}}"      ng-attr-y2="{{curPath.y2}}" stroke-width="15"></line>
                 </svg>
             </div>
         </div>

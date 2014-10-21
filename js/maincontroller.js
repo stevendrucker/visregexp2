@@ -29,7 +29,7 @@
     $scope.dblclick = function(evt) {
         newx = evt.pageX - evt.currentTarget.offsetLeft;
         newy = evt.pageY - evt.currentTarget.offsetTop;
-        newnode = new VR_node("newnode","smallgreen",newx,newy,[]);
+        newnode = new VR_node("newnode","compact",newx,newy,[]);
         $scope.dataList.push(newnode);
 
     }

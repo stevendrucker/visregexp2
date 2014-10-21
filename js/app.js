@@ -31,8 +31,8 @@ app.directive('node', function ($timeout) {
                  		scope.$parent.curPath.y1=newy;
                  		scope.$parent.curPath.x2=newx;
                  		scope.$parent.curPath.y2=newy;
-                	});;                     	      
-	          theElem.append("rect")
+                	});
+	          theRect = theElem.append("rect")
                 .attr("rx", 10)
                 .attr("ry", 80)
                 .attr("x", -100)
@@ -43,9 +43,42 @@ app.directive('node', function ($timeout) {
               	.attr("x",-90)
               	.attr("y",-30)
               	.text(scope.obj.text)
+              theElem.append("circle")
+                .attr("cx", 85)
+                .attr("cy", 40)
+                .attr("r", 5)
+                .attr("fill", "white")
+                .attr("class", "expander")
+               .on("mousedown", function () {
+                   // this is gross, but need a better way of finding the enclosing rect
+                   theParent = d3.select(d3.event.target.parentElement);
+                   newRect = theParent.select("rect");
+                   newIcon = theParent.select(".expander");
+                   if (scope.obj.stype == "compact") {
+                       scope.obj.stype = "expanded";
+                       newRect.transition()
+                           .duration(500)
+                           .attr("width", 600)
+                           .attr("height", 400)
+                       newIcon.transition()
+                            .duration(500)
+                            .attr("cx", 485)
+                            .attr("cy",290)                            
+                   } else {
+                       scope.obj.stype = "compact";
+                       newRect.transition()
+                           .duration(500)
+                           .attr("width", 200)
+                           .attr("height", 100)
+                       newIcon.transition()
+                            .duration(500)
+                            .attr("cx", 85)
+                            .attr("cy", 40)
+                   }
+               });
 
 	      })
-//	      console.log('Replacing ', lElement, ' with ', newGuy);
+	      console.log('Replacing ', lElement, ' with ', newGuy);
 	    } 
 	}} ) ;
 
